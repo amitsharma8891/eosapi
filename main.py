@@ -101,7 +101,7 @@ def approve():
     signatory = content['signatory']
 
     command = """
-           cleos --url https://api-kylin.eosasia.one:443 multisig approve %s %s `{"actor": "%s", "permission": "active"}` -p %s@active
+           cleos --url https://api-kylin.eosasia.one:443 multisig approve %s %s '{"actor": "%s", "permission": "active"}' -p %s@active
        """
     command = command % (proposer, contract_name, signatory, signatory)
     subprocess.call(command, shell=True)
