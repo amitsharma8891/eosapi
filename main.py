@@ -35,14 +35,12 @@ def setmultisigpermissions():
     """
     command = command % (multiSigAccount, proposer, signatory1, signatory2, multiSigAccount )
     print(command)
-
+    subprocess.call(command, shell=True)
     #cleos --url https://api-kylin.eosasia.one:443 set account permission mymultisig14 owner '{"threshold":2,"keys":[],"accounts":[{"permission":{"actor":"mcttoken1233","permission":"owner"},"weight":1},{"permission":{"actor":"mcttoken1234","permission":"owner"},"weight":1},{"permission":{"actor":"mcttoken1235","permission":"owner"},"weight":1}],"waits":[]}' -p mymultisig14@owner
 
 
     ownerCommand = """
-        cleos --url https://api-kylin.eosasia.one:443 set account permission %s owner `{"threshold":2,"keys":[],"accounts":[{"permission":{"actor":"%s","permission":"owner"},"weight":1},
-        {"permission":{"actor":"%s","permission":"owner"},"weight":1},{"permission":{"actor":"%s","permission":"owner"},"weight":1}],"waits":[]}` -p %s@owner
-
+        cleos --url https://api-kylin.eosasia.one:443 set account permission %s owner `{"threshold":2,"keys":[],"accounts":[{"permission":{"actor":"%s","permission":"owner"},"weight":1},{"permission":{"actor":"%s","permission":"owner"},"weight":1},{"permission":{"actor":"%s","permission":"owner"},"weight":1}],"waits":[]}` -p %s@owner
     """
     ownerCommand = ownerCommand % (multiSigAccount, proposer, signatory1, signatory2, multiSigAccount )
     # print(ownerCommand)
@@ -69,14 +67,12 @@ def propose():
     memo = content['memeo']
 
     command = """
-        cleos --url https://api-kylin.eosasia.one:443 multisig propose %s 
-        `[{"actor": "%s", "permission": "active"},{"actor": "%s", "permission": "active"}]` 
-        `[{"actor": "%s", "permission": "active"}]` 
-        eosio.token transfer '{"from":"%s", "to":"%s", "quantity":"5.0000 EOS", "memo":"%s"}' -p %s@active
+        cleos --url https://api-kylin.eosasia.one:443 multisig propose %s '[{"actor": "%s", "permission": "active"},{"actor": "%s", "permission": "active"}]' '[{"actor": "%s", "permission": "active"}]' eosio.token transfer '{"from":"%s", "to":"%s", "quantity":"5.0000 EOS", "memo":"%s"}' -p %s@active
     """
     command = command % (contractName, signatory1, signatory2, multiSigAccount, multiSigAccount, proposer, memo, proposer)
 
     print(command)
+    subprocess.call(command, shell=True)
     return ''
 
 @app.route("/review",  methods=['POST'])
@@ -89,6 +85,7 @@ def review():
         cleos --url https://api-kylin.eosasia.one:443  multisig review %s %s
     """
     command = command % (proposer, contract_name)
+    subprocess.call(command, shell=True)
     return ''
 
 @app.route("/approve", methods=['POST'])
@@ -105,6 +102,7 @@ def approve():
            cleos --url https://api-kylin.eosasia.one:443 multisig approve %s %s `{"actor": "%s", "permission": "active"}` -p %s@active
        """
     command = command % (proposer, contract_name, signatory, signatory)
+    subprocess.call(command, shell=True)
 
     return ''
 
@@ -120,7 +118,7 @@ def execute():
         cleos --url https://api-kylin.eosasia.one:443 multisig exec %s %s -p %s@active
     """
     command = command % (proposer, contract_name, proposer)
-
+    subprocess.call(command, shell=True)
     return ''
 
 
