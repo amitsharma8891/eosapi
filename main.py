@@ -3,8 +3,10 @@ import envoy
 import subprocess
 from flask import current_app, jsonify, request
 from flask import Flask
-
+from flask_cors import CORS
+import settings
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/hello")
@@ -126,5 +128,5 @@ def execute():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8089)
+    app.run(host=settings.SERVER_HOST, port=settings.PORT)
 # subprocess.call('mysql -u root -p -e "CREATE DATABASE flasktest; GRANT ALL ON flasktest.* TO root@localhost IDENTIFIED BY `flask123`; FLUSH PRIVILEGES"', shell=True)
